@@ -1,10 +1,11 @@
 -- ============================================================
--- PriceWatch v2 — Complete Database Schema
--- MySQL 8.0+
+-- PriceWatch v2 — Fixed Database Schema
+-- Works with MySQL 5.7 and MySQL 8.0
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS pricewatch;
-USE pricewatch;
+-- DROP DATABASE IF EXISTS pricewatch;
+CREATE DATABASE IF NOT EXISTS sql5821709;
+USE sql5821709;
 
 -- ─── USERS ───────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
@@ -61,9 +62,11 @@ CREATE TABLE IF NOT EXISTS alerts (
   FOREIGN KEY (watch_id) REFERENCES watchlist(watch_id) ON DELETE CASCADE
 );
 
--- ─── TRIGGER: Auto-alert when price hits target ──────────────
+-- ─── TRIGGER ─────────────────────────────────────────────────
+DROP TRIGGER IF EXISTS check_price_alert;
+
 DELIMITER //
-CREATE TRIGGER IF NOT EXISTS check_price_alert
+CREATE TRIGGER check_price_alert
 AFTER INSERT ON price_history
 FOR EACH ROW
 BEGIN
@@ -76,12 +79,12 @@ BEGIN
 END; //
 DELIMITER ;
 
--- ─── INDEXES ─────────────────────────────────────────────────
-CREATE INDEX IF NOT EXISTS idx_ph_product  ON price_history(product_id);
-CREATE INDEX IF NOT EXISTS idx_ph_time     ON price_history(recorded_at);
-CREATE INDEX IF NOT EXISTS idx_wl_user     ON watchlist(user_id);
-CREATE INDEX IF NOT EXISTS idx_alert_watch ON alerts(watch_id);
-CREATE INDEX IF NOT EXISTS idx_alert_email ON alerts(email_sent);
+-- ─── INDEXES (fixed — no IF NOT EXISTS) ──────────────────────
+CREATE INDEX idx_ph_product  ON price_history(product_id);
+CREATE INDEX idx_ph_time     ON price_history(recorded_at);
+CREATE INDEX idx_wl_user     ON watchlist(user_id);
+CREATE INDEX idx_alert_watch ON alerts(watch_id);
+CREATE INDEX idx_alert_email ON alerts(email_sent);
 
 -- ─── SEED DATA ───────────────────────────────────────────────
 INSERT INTO users (name, email, password, notify_email) VALUES
