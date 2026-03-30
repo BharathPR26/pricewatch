@@ -3,9 +3,9 @@
 -- Works with MySQL 5.7 and MySQL 8.0
 -- ============================================================
 
--- DROP DATABASE IF EXISTS pricewatch;
-CREATE DATABASE IF NOT EXISTS sql5821709;
-USE sql5821709;
+DROP DATABASE IF EXISTS pricewatch;
+CREATE DATABASE IF NOT EXISTS pricewatch;
+USE pricewatch;
 
 -- ─── USERS ───────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- ─── PRODUCTS ────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS products (
   product_id   INT AUTO_INCREMENT PRIMARY KEY,
-  name         VARCHAR(255)  NOT NULL,
+  name         VARCHAR(1000)  NOT NULL,
   url          TEXT          NOT NULL,
   category     ENUM('Electronics','Fashion','Books','Food','Home','Other') DEFAULT 'Other',
   image_url    TEXT,
